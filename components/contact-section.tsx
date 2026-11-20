@@ -9,7 +9,7 @@ import { Button } from "./ui/Button"
 import { Alert, AlertContent, AlertDescription, AlertTitle } from "./ui/Alert"
 
 const link = "whitespace-nowrap text-prism-link underline underline-offset-4 hover:text-prism-link-hover"
-const empty = { name: "", email: "", message: "" }
+const empty = { name: "", email: "", message: "", website: "" }
 
 export function ContactSection() {
   const [form, setForm] = useState(empty)
@@ -75,18 +75,37 @@ export function ContactSection() {
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <Field required disabled={status === "loading"}>
               <FieldLabel>Nome</FieldLabel>
-              <Input size="lg" fullWidth autoComplete="name" value={form.name} onChange={set("name")} />
+              <Input size="lg" fullWidth autoComplete="name" maxLength={100} value={form.name} onChange={set("name")} />
             </Field>
             <Field required disabled={status === "loading"}>
               <FieldLabel>Email</FieldLabel>
-              <Input size="lg" fullWidth type="email" autoComplete="email" value={form.email} onChange={set("email")} />
+              <Input
+                size="lg"
+                fullWidth
+                type="email"
+                autoComplete="email"
+                maxLength={254}
+                value={form.email}
+                onChange={set("email")}
+              />
             </Field>
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={form.website}
+              onChange={set("website")}
+              className="absolute -left-[9999px] size-px opacity-0"
+            />
             <Field required disabled={status === "loading"}>
               <FieldLabel>Messaggio</FieldLabel>
               <Textarea
                 fullWidth
                 rows={5}
                 resize="vertical"
+                maxLength={5000}
                 placeholder="Es. un gestionale per il mio negozio, da avere entro marzo"
                 value={form.message}
                 onChange={set("message")}

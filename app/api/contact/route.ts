@@ -1,12 +1,23 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
 
-export async function POST(request: Request) {
-  const body = await request.json().catch(() => ({}))
-  const { name, email, message } = body as Record<string, string>
+const field = (value: unknown, max: number) =>
+  typeof value === "string" && value.trim() && value.length <= max ? value.trim() : null
 
-  if (!name?.trim() || !email?.trim() || !message?.trim()) {
-    return NextResponse.json({ error: "Compila nome, email e messaggio." }, { status: 400 })
+export async function POST(request: Request) {
+  const body = (await request.json().catch(() => ({}))) as Record<string, unknown>
+
+  if (body.website) return NextResponse.json({ success: true })
+
+  const name = field(body.name, 100)?.replace(/[\r\n]+/g, " ")
+  const email = field(body.email, 254)
+  const message = field(body.message, 5000)
+
+  if (!name || !email || !message) {
+    return NextResponse.json(
+      { error: "Compila nome, email e messaggio (il messaggio può avere al massimo 5000 caratteri)." },
+      { status: 400 },
+    )
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
