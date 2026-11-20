@@ -1,0 +1,14 @@
+{
+  "framework": "react",
+  "styling": "tailwind",
+  "componentsPath": "components/ui",
+  "components": [
+    "button",
+    "input",
+    "textarea",
+    "label",
+    "field",
+    "icon-button",
+    "alert"
+  ]
+}
