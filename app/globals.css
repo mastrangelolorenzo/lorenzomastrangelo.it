@@ -72,13 +72,13 @@ body::before {
   background:
     radial-gradient(circle at 30% 30%, var(--fun-blue), transparent 24vmax),
     radial-gradient(circle at 72% 68%, var(--fun-pink), transparent 20vmax);
-  animation: drift 34s ease-in-out infinite alternate;
+  animation: drift 20s ease-in-out infinite alternate;
 }
 body::after {
   background:
     radial-gradient(circle at 70% 32%, var(--fun-yellow), transparent 18vmax),
     radial-gradient(circle at 32% 70%, var(--fun-green), transparent 22vmax);
-  animation: drift 42s ease-in-out infinite alternate-reverse;
+  animation: drift 26s ease-in-out infinite alternate-reverse;
 }
 @keyframes drift {
   from {
