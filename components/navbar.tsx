@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Briefcase, FolderOpen, Mail, User, Wrench } from "lucide-react"
+import { Briefcase, FolderOpen, Layers, Mail, User, Wrench } from "lucide-react"
 
 const links = [
   { name: "Chi sono", id: "chi-sono", Icon: User },
   { name: "Cosa creo", id: "servizi", Icon: Wrench },
   { name: "Progetti", id: "progetti", Icon: FolderOpen },
   { name: "Esperienza", id: "esperienza", Icon: Briefcase },
+  { name: "Stack", id: "stack", Icon: Layers },
   { name: "Contatti", id: "contatti", Icon: Mail },
 ]
 
@@ -40,7 +41,7 @@ export function Navbar() {
       <div className="relative flex gap-0.5">
         <span
           aria-hidden="true"
-          className="glass-pill absolute inset-y-0 left-0 w-16 rounded-prism-full transition-[translate,opacity] duration-500 ease-[cubic-bezier(0.34,1.3,0.64,1)] sm:w-20"
+          className="glass-pill absolute inset-y-0 left-0 w-[3.375rem] rounded-prism-full transition-[translate,opacity] duration-500 ease-[cubic-bezier(0.34,1.3,0.64,1)] sm:w-20"
           style={{
             translate: `calc(${Math.max(active, 0)} * (100% + 0.125rem)) 0`,
             opacity: active < 0 ? 0 : 1,
@@ -55,7 +56,7 @@ export function Navbar() {
               lockUntil.current = Date.now() + 1000
               setActive(i)
             }}
-            className="relative flex w-16 flex-col items-center gap-0.5 rounded-prism-full py-1.5 text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-prism-ring aria-[current]:text-prism-link sm:w-20"
+            className="relative flex w-[3.375rem] flex-col items-center gap-0.5 rounded-prism-full py-1.5 text-[10px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-prism-ring aria-[current]:text-prism-link sm:w-20 sm:text-[11px]"
           >
             <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
             {name}
