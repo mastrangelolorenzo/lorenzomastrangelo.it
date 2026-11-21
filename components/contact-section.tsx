@@ -9,7 +9,7 @@ import { Button } from "./ui/Button"
 import { Alert, AlertContent, AlertDescription, AlertTitle } from "./ui/Alert"
 
 const link = "whitespace-nowrap text-prism-link underline underline-offset-4 hover:text-prism-link-hover"
-const empty = { name: "", email: "", message: "", website: "" }
+const empty = { name: "", email: "", message: "", hp_field: "" }
 
 export function ContactSection() {
   const [form, setForm] = useState(empty)
@@ -91,12 +91,15 @@ export function ContactSection() {
             </Field>
             <input
               type="text"
-              name="website"
+              name="hp_field"
               tabIndex={-1}
               autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-bwignore
               aria-hidden="true"
-              value={form.website}
-              onChange={set("website")}
+              value={form.hp_field}
+              onChange={set("hp_field")}
               className="absolute -left-[9999px] size-px opacity-0"
             />
             <Field required disabled={status === "loading"}>

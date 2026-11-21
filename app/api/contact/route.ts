@@ -7,7 +7,10 @@ const field = (value: unknown, max: number) =>
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>
 
-  if (body.website) return NextResponse.json({ success: true })
+  if (body.hp_field) {
+    console.warn("contact: honeypot filled, message dropped")
+    return NextResponse.json({ success: true })
+  }
 
   const name = field(body.name, 100)?.replace(/[\r\n]+/g, " ")
   const email = field(body.email, 254)
