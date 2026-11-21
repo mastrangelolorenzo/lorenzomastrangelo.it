@@ -1,25 +1,27 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
+import { needs, stages, timings } from "@/lib/contact"
 
 const field = (value: unknown, max: number) =>
   typeof value === "string" && value.trim() && value.length <= max ? value.trim() : null
 
+const choice = (value: unknown, options: string[]) =>
+  typeof value === "string" && options.includes(value) ? value : null
+
+const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>
 
+  const need = choice(body.need, needs)
+  const stage = choice(body.stage, stages)
+  const timing = choice(body.timing, timings)
   const name = field(body.name, 100)?.replace(/[\r\n]+/g, " ")
-  const email = field(body.email, 254)
-  const message = field(body.message, 5000)
+  const contact = field(body.contact, 254)
+  const message = body.message ? field(body.message, 5000) : ""
 
-  if (!name || !email || !message) {
-    return NextResponse.json(
-      { error: "Compila nome, email e messaggio (il messaggio può avere al massimo 5000 caratteri)." },
-      { status: 400 },
-    )
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "L'indirizzo email non è valido." }, { status: 400 })
+  if (!need || !stage || !timing || !name || !contact || message === null) {
+    return NextResponse.json({ error: "Controlla le risposte: manca qualcosa o il testo è troppo lungo." }, { status: 400 })
   }
 
   const key = process.env.RESEND_API_KEY
@@ -32,9 +34,17 @@ export async function POST(request: Request) {
     const { data, error } = await new Resend(key).emails.send({
       from: "Portfolio <noreply@lorenzomastrangelo.it>",
       to: "lory9098@gmail.com",
-      subject: `Contatto da ${name}`,
-      replyTo: email,
-      text: `Nome: ${name}\nEmail: ${email}\n\n${message}`,
+      subject: `Contatto da ${name}: ${need}`,
+      ...(isEmail(contact) ? { replyTo: contact } : {}),
+      text: [
+        `Nome: ${name}`,
+        `Contatto: ${contact}`,
+        "",
+        `Di cosa ha bisogno: ${need}`,
+        `A che punto è: ${stage}`,
+        `Entro quando: ${timing}`,
+        ...(message ? ["", message] : []),
+      ].join("\n"),
     })
     if (error) {
       console.error("contact: resend error", error)
