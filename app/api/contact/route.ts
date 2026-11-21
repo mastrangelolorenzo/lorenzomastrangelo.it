@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { error } = await new Resend(key).emails.send({
+    const { data, error } = await new Resend(key).emails.send({
       from: "Portfolio <noreply@lorenzomastrangelo.it>",
       to: "lory9098@gmail.com",
       subject: `Contatto da ${name}`,
@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       console.error("contact: resend error", error)
       return NextResponse.json({ error: "Il messaggio non è partito. Chiamami o scrivimi su WhatsApp." }, { status: 502 })
     }
+    console.log("contact: sent", data?.id)
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error("contact: send failed", err)
