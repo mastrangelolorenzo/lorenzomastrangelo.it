@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   try {
     const { data, error } = await new Resend(key).emails.send({
       from: "Portfolio <noreply@lorenzomastrangelo.it>",
-      to: "lory9098@gmail.com",
+      to: "ciao@lorenzomastrangelo.it",
       subject: `Contatto da ${name}: ${need}`,
       ...(email ? { replyTo: email } : {}),
       text: [

@@ -96,10 +96,14 @@ export function ContactSection() {
           Usa il modulo qui sotto, oppure chiamami al{" "}
           <a href="tel:+393482868800" className={link}>
             348 286 8800
-          </a>{" "}
-          o scrivimi su{" "}
+          </a>
+          , scrivimi su{" "}
           <a href="https://wa.me/393482868800" className={link}>
             WhatsApp
+          </a>{" "}
+          o a{" "}
+          <a href="mailto:ciao@lorenzomastrangelo.it" className={link}>
+            ciao@lorenzomastrangelo.it
           </a>
           .
         </p>
