@@ -10,7 +10,7 @@ import { Alert, AlertContent, AlertDescription, AlertTitle } from "./ui/Alert"
 import { needs, stages, timings } from "@/lib/contact"
 
 const link = "whitespace-nowrap text-prism-link underline underline-offset-4 hover:text-prism-link-hover"
-const empty = { need: "", stage: "", timing: "", name: "", contact: "", message: "" }
+const empty = { need: "", stage: "", timing: "", name: "", phone: "", email: "", message: "" }
 type Answers = typeof empty
 
 function Choices({
@@ -57,7 +57,7 @@ export function ContactSection() {
   const [error, setError] = useState("")
 
   const set = (key: keyof Answers) => (value: string) => setAnswers({ ...answers, [key]: value })
-  const canContinue = [answers.need, answers.stage && answers.timing, answers.name.trim() && answers.contact.trim()][step]
+  const canContinue = [answers.need, answers.stage && answers.timing, answers.name.trim() && answers.phone.trim()][step]
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -152,13 +152,29 @@ export function ContactSection() {
                     />
                   </Field>
                   <Field required disabled={status === "loading"}>
-                    <FieldLabel>Telefono o email</FieldLabel>
+                    <FieldLabel>Telefono</FieldLabel>
                     <Input
                       size="lg"
                       fullWidth
+                      type="tel"
+                      autoComplete="tel"
+                      maxLength={30}
+                      pattern="[+\d\s().\-]{6,30}"
+                      title="Inserisci un numero di telefono, ad esempio 348 123 4567"
+                      value={answers.phone}
+                      onChange={(e) => set("phone")(e.target.value)}
+                    />
+                  </Field>
+                  <Field disabled={status === "loading"}>
+                    <FieldLabel>Email (facoltativa)</FieldLabel>
+                    <Input
+                      size="lg"
+                      fullWidth
+                      type="email"
+                      autoComplete="email"
                       maxLength={254}
-                      value={answers.contact}
-                      onChange={(e) => set("contact")(e.target.value)}
+                      value={answers.email}
+                      onChange={(e) => set("email")(e.target.value)}
                     />
                   </Field>
                   <Field disabled={status === "loading"}>

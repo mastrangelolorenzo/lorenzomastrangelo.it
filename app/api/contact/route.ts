@@ -17,11 +17,22 @@ export async function POST(request: Request) {
   const stage = choice(body.stage, stages)
   const timing = choice(body.timing, timings)
   const name = field(body.name, 100)?.replace(/[\r\n]+/g, " ")
-  const contact = field(body.contact, 254)
+  const phone = field(body.phone, 30)
+  const email = body.email ? field(body.email, 254) : ""
   const message = body.message ? field(body.message, 5000) : ""
 
-  if (!need || !stage || !timing || !name || !contact || message === null) {
-    return NextResponse.json({ error: "Controlla le risposte: manca qualcosa o il testo è troppo lungo." }, { status: 400 })
+  if (
+    !need ||
+    !stage ||
+    !timing ||
+    !name ||
+    !phone ||
+    !/^[+\d\s().-]{6,30}$/.test(phone) ||
+    email === null ||
+    (email && !isEmail(email)) ||
+    message === null
+  ) {
+    return NextResponse.json({ error: "Controlla le risposte: manca qualcosa, oppure telefono o email non sono validi." }, { status: 400 })
   }
 
   const key = process.env.RESEND_API_KEY
@@ -35,10 +46,11 @@ export async function POST(request: Request) {
       from: "Portfolio <noreply@lorenzomastrangelo.it>",
       to: "lory9098@gmail.com",
       subject: `Contatto da ${name}: ${need}`,
-      ...(isEmail(contact) ? { replyTo: contact } : {}),
+      ...(email ? { replyTo: email } : {}),
       text: [
         `Nome: ${name}`,
-        `Contatto: ${contact}`,
+        `Telefono: ${phone}`,
+        ...(email ? [`Email: ${email}`] : []),
         "",
         `Di cosa ha bisogno: ${need}`,
         `A che punto è: ${stage}`,
