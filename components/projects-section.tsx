@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Section } from "./section"
 
 type Project = { name: string; url: string; text: string }
@@ -14,25 +15,29 @@ const undefied: Project = {
   text: "Un allarme intelligente pensato per la tua privacy: tutto resta in casa tua, protetto, e lo controlli solo tu.",
 }
 
-const clients: Project[] = [
+const clients: (Project & { image: string })[] = [
   {
     name: "Cassa Connessa",
     url: "https://app.cassaconnessa.com",
+    image: "/progetti/cassa.jpg",
     text: "Il sistema con cui molti ristoranti di Pescara gestiscono cassa, ordini, prenotazioni e clienti in un unico posto.",
   },
   {
     name: "MRM Studio",
     url: "https://mrmstudio.it",
+    image: "/progetti/mrm.jpg",
     text: "Il sito di uno studio di architettura e ingegneria tra Pescara e Castel di Sangro.",
   },
   {
     name: "Defra System",
     url: "https://defrasystem.it",
+    image: "/progetti/defra.jpg",
     text: "Sito per un'azienda abruzzese di registratori di cassa e sistemi POS, cliente con cui collaboro stabilmente.",
   },
   {
     name: "Leledan Builds",
     url: "https://leledanbuilds.com",
+    image: "/progetti/leledan.jpg",
     text: "Il negozio online di un creativo digitale: mostra i suoi lavori, riceve ordini su commissione e incassa i pagamenti online.",
   },
 ]
@@ -65,16 +70,28 @@ export function ProjectsSection() {
       </div>
 
       <h3 className="mt-16 border-t border-prism-border pt-12 text-xl font-bold">Per i clienti</h3>
-      <ul className="mt-2 divide-y divide-prism-border">
+      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
         {clients.map((p) => (
-          <li key={p.url} className="grid gap-1 py-5 sm:grid-cols-[12rem_1fr] sm:gap-6">
-            <div>
-              <h4 className="text-lg font-semibold">{p.name}</h4>
-              <a href={p.url} className="text-sm text-prism-link underline underline-offset-4 hover:text-prism-link-hover">
-                {host(p.url)}
-              </a>
-            </div>
-            <p className="max-w-2xl leading-relaxed text-prism-muted-fg">{p.text}</p>
+          <li key={p.url}>
+            <a
+              href={p.url}
+              className="group block h-full overflow-hidden rounded-[1.5rem] border border-prism-border bg-prism-bg/70 transition-colors hover:border-prism-border-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-prism-ring"
+            >
+              <div className="overflow-hidden border-b border-prism-border">
+                <Image
+                  src={p.image}
+                  alt={`Il sito ${p.name}`}
+                  width={1200}
+                  height={750}
+                  className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+              <div className="p-5">
+                <h4 className="text-lg font-semibold">{p.name}</h4>
+                <p className="text-sm text-prism-link underline underline-offset-4 group-hover:text-prism-link-hover">{host(p.url)}</p>
+                <p className="mt-3 leading-relaxed text-prism-muted-fg">{p.text}</p>
+              </div>
+            </a>
           </li>
         ))}
       </ul>
